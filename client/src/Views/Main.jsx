@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {React, useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import ProductForm from '../Components/ProductForm'
 import ProductList from '../Components/ProductList'
 
@@ -12,11 +12,15 @@ export default () => {
             .catch(err => console.log(err))
     }, [])
 
+    const removeFromDom = productID => {
+        setProducts(products.filter(product => product._id != productID))
+    }
+
     return (
         <>
             <h1 className="text-center">Product Manager</h1>
             <ProductForm />
-            <ProductList products={products} />
+            <ProductList products={products} removeFromDom={removeFromDom}/>
         </>
     )
 }

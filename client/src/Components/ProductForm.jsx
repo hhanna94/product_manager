@@ -3,11 +3,13 @@ import axios from 'axios';
 
 
 const ProductForm = () => {
-    const [formInfo, setFormInfo] = useState({
+    const defaultProductInfo = {
         title: "",
         price: "",
         description: "",
-    })
+    }
+
+    const [formInfo, setFormInfo] = useState(defaultProductInfo)
 
 
     const handleSubmit = (e) => {
@@ -15,7 +17,7 @@ const ProductForm = () => {
         axios.post('http://localhost:8000/api/products', formInfo)
             .then(res => console.log(res))
             .catch(err => console.log(err))
-        setFormInfo({title: "", price: "", description: ""})
+        setFormInfo(defaultProductInfo)
     }
 
     const handleChange = (e) => {
