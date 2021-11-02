@@ -6,9 +6,9 @@ const ProductList = (props) => {
         <div className="text-center">
             {props.products.map( (product, index) => {
                 return (
-                    <>
-                        <Link key={index} className="d-block" to={`/products/${product._id}`}>{product.title}</Link>
-                    </>
+                    <p key={index}>
+                        <Link className="d-block" to={`/products/${product._id}`}>{product.title}</Link>
+                    </p>
                 )
             })}
         </div>

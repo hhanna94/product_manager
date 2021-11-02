@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useHistory } from "react-router-dom";
+import DeleteButton from './DeleteButton';
 
 
 const ProductDetail = (props) => {
@@ -9,14 +10,6 @@ const ProductDetail = (props) => {
     const {id} = useParams();
 
     const history = useHistory();
-    const { removeFromDom } = props;
-
-    const handleDelete = () => {
-        axios.delete(`http://localhost:8000/api/products/${id}`)
-            .then(res => { removeFromDom(id) })
-            .catch(err => console.log(err))
-            .then(history.push("/products"))
-    }
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/products/${id}`)
@@ -35,7 +28,7 @@ const ProductDetail = (props) => {
                 <p>Price: ${product.price}.00</p>
                 <p>Description: {product.description}</p>
                 <a href={`/products/${id}/edit`} className="btn btn-success me-3">Edit</a>
-                <button onClick={handleDelete} className="btn btn-danger">Delete</button>
+                <DeleteButton productID={product._id} successCallback={() => history.push("/products")} />
             </div>)}
         </div>
     );

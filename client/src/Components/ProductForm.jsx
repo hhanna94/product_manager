@@ -1,25 +1,21 @@
 import {React, useState} from 'react';
-import axios from 'axios';
 
+const ProductForm = (props) => {
+    // Call on the part to get the onSubmitProp function and the default values for a product (empty strings).
+    const {onSubmitProp, defaultProductInfo} = props
 
-const ProductForm = () => {
-    const defaultProductInfo = {
-        title: "",
-        price: "",
-        description: "",
-    }
-
+    // Set the useState for the formInfo which by default is empty strings.
     const [formInfo, setFormInfo] = useState(defaultProductInfo)
 
-
+    // When submitting the form, prevent the default (refreshing the page), use the parent's onSubmitProp function to call on the API and create a new product.
     const handleSubmit = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:8000/api/products', formInfo)
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
+        onSubmitProp(formInfo)
+        // Reset the text to the default, which is empty strings for all values.
         setFormInfo(defaultProductInfo)
     }
 
+    // When typing in the form, update the values for whatever field you're typing in at the time.
     const handleChange = (e) => {
         setFormInfo({...formInfo, [e.target.name]: e.target.value})
     }
@@ -39,9 +35,8 @@ const ProductForm = () => {
                     <label >Description:</label>
                     <input onChange={e => handleChange(e)} type="text" name="description" className="ms-3" value={formInfo.description}/>
                 </div>
-                <input className="btn btn-secondary mt-3" style={{width: 120+"px"}} type="submit" value="Create" />
+                <input className="btn btn-secondary mt-3" style={{width: 120+"px"}} type="submit" value="Submit" />
             </form>
-            <hr />
         </div>
     );
 };

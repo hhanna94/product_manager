@@ -1,35 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useHistory } from "react-router-dom";
+import ProductForm from '../Components/ProductForm';
+import DeleteButton from '../Components/DeleteButton';
 
 const UpdateProduct = (props) => {
     const { id } = useParams();
     const history = useHistory();
     const { removeFromDom } = props;
-
-    const [formInfo, setFormInfo] = useState({
-        title: "",
-        price: "",
-        description: "",
-    })
+    const [product, setProduct] = useState({});
+    const [loaded, setLoaded] = useState(false)
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/products/${id}`)
-            // .then(res => console.log(res.data))
-            .then(res => setFormInfo(res.data))
+            .then(res => {
+                setProduct(res.data)
+                setLoaded(true)
+            })
     }, [])
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        axios.put(`http://localhost:8000/api/products/${id}`, formInfo)
+    const updateProduct = product => {
+        axios.put(`http://localhost:8000/api/products/${id}`, product)
             .then(res => console.log(res))
             .then(history.push("/products"))
             .catch(err => console.log(err));
-
-    }
-
-    const handleChange = (e) => {
-        setFormInfo({ ...formInfo, [e.target.name]: e.target.value })
     }
 
     const handleDelete = (productID) => {
@@ -40,25 +34,14 @@ const UpdateProduct = (props) => {
     }
 
     return (
-        <div className="container mt-5">
-            <h2 className="text-center">Update Product</h2>
-            <form onSubmit={(e) => handleSubmit(e)} className="container w-25 d-flex flex-column align-items-center">
+        <div>
+            {loaded && (
                 <div>
-                    <label >Title:</label>
-                    <input onChange={e => handleChange(e)} type="text" name="title" className="ms-3" value={formInfo.title} />
+                    <h2 className="text-center">Edit Product</h2>
+                    <ProductForm onSubmitProp={updateProduct} defaultProductInfo={product} id={id}/>
+                    <DeleteButton productID={product._id} successCallback={() => history.push("/products")} />
                 </div>
-                <div className="mt-3">
-                    <label >Price:</label>
-                    <input onChange={e => handleChange(e)} type="number" name="price" className="ms-3" value={formInfo.price} />
-                </div>
-                <div className="mt-3">
-                    <label >Description:</label>
-                    <input onChange={e => handleChange(e)} type="text" name="description" className="ms-3" value={formInfo.description} />
-                </div>
-                <input className="btn btn-secondary mt-3" style={{ width: 120 + "px" }} type="submit" value="Update" />
-                <button onClick={handleDelete} className="btn btn-danger">Delete</button>
-            </form>
-            <hr />
+            )}
         </div>
     );
 };
