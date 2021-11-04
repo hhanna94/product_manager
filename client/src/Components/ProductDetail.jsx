@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams, useHistory } from "react-router-dom";
+import {useHistory } from "react-router-dom";
+import {useParams} from 'react-router'
 import DeleteButton from './DeleteButton';
 
 
@@ -20,7 +21,6 @@ const ProductDetail = (props) => {
             .catch(err => console.log(err));
     }, [])
 
-    
     return (
         <div>
             {loaded && (<div className="container mt-5 text-center">

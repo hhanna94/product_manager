@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import {useParams} from 'react-router'
 import ProductForm from '../Components/ProductForm';
 import DeleteButton from '../Components/DeleteButton';
 
 const UpdateProduct = (props) => {
     const { id } = useParams();
     const history = useHistory();
-    const { removeFromDom } = props;
     const [product, setProduct] = useState({});
     const [loaded, setLoaded] = useState(false)
 
@@ -24,13 +24,6 @@ const UpdateProduct = (props) => {
             .then(res => console.log(res))
             .then(history.push("/products"))
             .catch(err => console.log(err));
-    }
-
-    const handleDelete = (productID) => {
-        axios.delete(`http://localhost:8000/api/products/${id}`)
-            .then(res => { removeFromDom(productID) })
-            .catch(err => console.log(err))
-            .then(history.push("/products"))
     }
 
     return (
